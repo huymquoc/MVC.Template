@@ -1,0 +1,11 @@
+﻿@using System.Web.Mvc.Html
+@using WebFrameWork.Domain
+@model WebFrameWork.Domain.Issue
+
+   @using (Html.BeginForm("Widget", "Sample", FormMethod.Post))
+   {
+
+    @Html.TextBoxFor(i => i.Description)
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+   }

@@ -1,0 +1,44 @@
+﻿@using System.Web.Mvc.Html
+@using MVC.Template.Web.Domain
+@model IEnumerable<MVC.Template.Web.Domain.Issue>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Issues</h2>
+
+@foreach (var item in Model)
+{
+    <li>@item.Description</li>
+}
+
+<button type="button" class="add btn btn-primary"> +Add</button>
+
+<div id="addForm" >
+
+
+</div>
+
+
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $('.add').click(function (e) {
+
+                $.get('@Url.Action("Issue","Sample")', function (data) {
+                    $('#addForm').html(data);
+                    console.log(data);
+
+                });
+
+            });
+        });
+
+</script>
+
+}
