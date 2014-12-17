@@ -36,38 +36,49 @@ namespace MVC.Template.Web.Domain
                 throw new ArgumentNullException("context");
             _context = context;
         }
-        public IQueryable<T> GetAll()
+        public virtual IQueryable<T> GetAll()
         {
             return _context.Set<T>();
         }
 
-        public void Add(T entity)
+        public virtual IQueryable<T> GetAll(params Expression<Func<T, object>>[] navProperties)
         {
-            _context.Set<T>().Add(entity);
+            IQueryable<T> query = _context.Set<T>();
+            foreach (var property in navProperties)
+            {
+                query.Include(property);
+            }
+            return query.AsNoTracking();
+        }
+        public virtual void Add(params T[] entities)
+        {
+            foreach (var entity in entities)
+            {
+                _context.Set<T>().Add(entity);
+            }          
         }
 
-        public T Get(Expression<Func<T, bool>> expression)
+        public virtual T Get(Expression<Func<T, bool>> expression)
         {
             return _context.Set<T>().SingleOrDefault(expression);
         }
 
-        public void Delete(T entity)
+        public virtual void Delete(T entity)
         {
             DbEntityEntry entry = _context.Entry(entity);
             entry.State = EntityState.Deleted;
         }
 
-        public void Edit(T entity)
+        public virtual void Edit(T entity)
         {
             DbEntityEntry entry = _context.Entry(entity);
             entry.State = EntityState.Modified;
         }
-        public IQueryable<T> Find(Expression<Func<T, bool>> expression)
+        public virtual IQueryable<T> Find(Expression<Func<T, bool>> predicate)
         {
-            return _context.Set<T>().Where(expression);
+            return _context.Set<T>().Where(predicate);
         }
-
-        public void Save()
+        public virtual void Save()
         {
             _context.SaveChanges();
         }

@@ -9,7 +9,9 @@ namespace MVC.Template.Web.Domain
     public interface IEntitityRepository<T> where T : class
     {
         IQueryable<T> GetAll();
-        void Add(T entity);
+
+        IQueryable<T> GetAll(params Expression<Func<T, object>>[] navProperties);
+        void Add(params T[] entities);
         T Get(Expression<Func<T, bool>> expression);
         void Delete(T entity);
         void Edit(T entity);
